@@ -160,7 +160,7 @@
 					if (interval){
 						window.cancelAnimationFrame(interval);
 					}
-					interval = window.requestAnimationFrame(drawFrame);
+					interval = window.requestAnimationFrame(animationLogic);
 					$this.data('seeThru').interval = interval;
 				}).bind('pause.seeThru', function(){ //stop interval on pause
 					window.cancelAnimationFrame(interval);
@@ -223,7 +223,7 @@
 				}
 
 				/*draw buffer info into display canvas*/
-				function drawFrame() {
+				function drawFrame(){
 					
 					buffer.drawImage(video, 0, 0, dimensions.width, dimensions.height * divisor); //scales if <video>-dimensions are not matching
 					var image = buffer.getImageData(0, 0, dimensions.width, dimensions.height);
@@ -236,7 +236,11 @@
 
 					display.putImageData(image, 0, 0, 0, 0, dimensions.width, dimensions.height);
 						
-					window.requestAnimationFrame(drawFrame);
+				}
+				
+				function animationLogic(){
+					drawFrame();
+					window.requestAnimationFrame(animationLogic);
 				}
 
 			});

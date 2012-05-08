@@ -61,7 +61,7 @@ There are a few options you can pass when calling the plugin:
 
 This might look like this:
 ```javascript
-$('#myVideo').seeThru({fps:12,start:'autoplay',end:'stop'});
+$('#myVideo').seeThru({start:'autoplay',end:'stop'});
 ```
 or
 ```javascript
