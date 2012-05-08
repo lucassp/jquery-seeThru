@@ -11,7 +11,7 @@
 (function($) {
 
 	//from http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-	/*var lastTime = 0;
+	var lastTime = 0;
 	var vendors = ['ms', 'moz', 'webkit', 'o'];
 	for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
 		window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
@@ -32,7 +32,7 @@
 		window.cancelAnimationFrame = function(id) {
 			clearTimeout(id);
 		};
-	}*/
+	}
 
 	function convertAlphaMask(dimensions, maskObj){
 		
@@ -157,16 +157,16 @@
 				var refresh = 1 / settings.fps * 1000; //frame rate to ms-interval
 				
 				$this.hide().data('seeThru',{'staticMask':staticMask,'alphaMask':alphaMask,interval:interval}).after(bufferCanvas,displayCanvas);
-
+				
 				/*event handling - all events are .seeThru-namespaced*/
 				$this.bind('play.seeThru', function() { //refresh canvas elements
 					if (interval){
-						webkitCancelAnimationFrame(interval);
+						window.cancelAnimationFrame(interval);
 					}
-					interval = webkitRequestAnimationFrame(drawFrame);
+					interval = window.requestAnimationFrame(drawFrame);
 					$this.data('seeThru').interval = interval;
 				}).bind('pause.seeThru', function(){ //stop interval on pause
-					webkitCancelAnimationFrame(interval);
+					window.cancelAnimationFrame(interval);
 				});
 				
 				if (settings.start === 'autoplay'){
@@ -245,6 +245,7 @@
 					
 					}
 					
+					webkitRequestAnimationFrame(drawFrame);
 				}
 
 			});
@@ -316,7 +317,7 @@
 			var $this = $(this);
 		
 			if ($this.data('seeThru')){
-				webkitCancelAnimationFrame($this.data('seeThru').interval);
+				window.cancelAnimationFrame($this.data('seeThru').interval);
 				$this.show().unbind('.seeThru').removeData('seeThru').nextAll('.seeThru-buffer:first,.seeThru-display:first').remove();
 			}
 		});
