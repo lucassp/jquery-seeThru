@@ -29,11 +29,11 @@ Basic HTML5 video markup should look something like this:
 
 In case you are planning to have your video set to autoplay or loop you can do this when initializing the plugin. The lack of a loop option in Firefox will also be fixed when doing that.<br/>
 To make the magic happen you just have to do the following:<br/>
-Include jQuery (I built the plugin with 1.7.1 but it should be working with older versions down to 1.4 as well) and the plugin in your `<head>`:
+Include jQuery (I built the plugin with 1.7+ but it should be working with older versions down to 1.4 as well) and the plugin in your `<head>`:
 
 ```html 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="jquery-seeThru.0.9.7.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="jquery-seeThru.0.9.8.min.js"></script>
 ```
 and then call the following jQuery method on your video (preferrably on `$(document).ready`):
 
@@ -52,15 +52,12 @@ If you specify dimension-attributes in your markup they will be considered, in c
 ##Options##
 There are a few options you can pass when calling the plugin:
 
- - `fps` expects a number specifying the frame rate that will be used for rendering the video. It defaults to `25` and should be adjusted to the frame rate of your source file for best results. If you are concerned about performance issues you can try decreasing the frame rate and therefore reduce the rendering effort the browser has to handle.
  - `start` defines the video's behavior on load. It defaults to `'autoplay'` which will automatically start the video as soon as possible. Other options are `'clicktoplay'` which will display the first frame of the video until it is clicked or `'external'` which will just display the first frame of the video and wait for external JS calls (so you can build your own interface or something - note that although the `<video>` is hidden it is still playing and controls the rendered image).
  - `end` defines the video's behavior when it has reached its end. It defaults to `'loop'` which will loop the video. Other possibilities are `'stop'` (it will just stop), or `'rewind'` which will jump back to the first frame and stop. If you use `start:'clicktoplay'` along with `'rewind'` or `'end'` the video will be clickable again when finished.
  - `mask` lets you use the content of an `<img>` node as alpha information (also black and white). The parameter expects a CSS selector (preferrably ID) that refers directly to an image tag, like `'#fancyMask'`. In case it returns a collection (class passed), the first element is used - in case the selector matches nothing or a non-image node the option is ignored. Defaults to an empty string, so video information is used for the alpha.
  - `alphaMask` specifies if the plugin uses either the black and white information (i.e. `false`) or the alpha information (i.e. `true`) of the element specified in the `mask` parameter. Defaults to `false`.
  - `height` can be used to control the height of the rendered canvas. Overrides the attributes of the `<video>`-element
  - `width` can be used to control the width of the rendered canvas. Overrides the attributes of the `<video>`-element
- - `forceRendering` is a flag used to control if the browser will stop rendering the canvas elements when they are scrolled out of the viewport (therefore not visible). This is set to false by default as it greatly improves performance (especially with more than one video on a single page), yet if it messes with something you want to do with the canvas elements you can always set the option to true and the canvas will be forced to update all the time.
-
 
 This might look like this:
 ```javascript
@@ -132,6 +129,7 @@ $('#myRadVideoNeedsTransparencies').seeThru();
 Voila! Here's an [example][1].
 
 ##Changelog##
+   * v0.9.8: the plugin now uses the `requestAnimationFrame`-API for refreshing the canvas instead of using a JavaScript-interval (older browsers will be "poly-filled"), this should increase performance in critical situations and improve overall efficiency. Therefore the `fps` and `forceRendering` options are deprecated.
    * v0.9.7: the original video will now echo mouse events triggered by the canvas represenation, so you can still "use" the hidden video element to bind events for user interaction, faster
    * v0.9.6: elements that are not visible in the viewport will stop rendering to lower CPU usage, added the `forceRendering` option
    * v0.9.5: added simple video playback control methods: `play` and `pause`
