@@ -236,7 +236,7 @@
 
 					display.putImageData(image, 0, 0, 0, 0, dimensions.width, dimensions.height);
 						
-					webkitRequestAnimationFrame(drawFrame);
+					window.requestAnimationFrame(drawFrame);
 				}
 
 			});
