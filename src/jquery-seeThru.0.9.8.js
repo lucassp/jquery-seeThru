@@ -28,7 +28,7 @@
 		};
 	}
  
-    if (!window.cancelAnimationFrame){
+	if (!window.cancelAnimationFrame){
 		window.cancelAnimationFrame = function(id) {
 			clearTimeout(id);
 		};
@@ -58,14 +58,12 @@
 
 		/* OPTIONS */
 		var settings = $.extend({
-		  fps: 25, //frame rate that the browser will render the video in - best results when the framerates (src and display) are matching
 		  start: 'autoplay', //'autoplay', 'clicktoplay', 'external' (will display the first frame and make the video wait for an external interface) - defaults to autoplay
 		  end: 'loop', //'loop', 'rewind', 'stop' any other input will default to 'stop'
 		  mask: '', //this lets you define a <img> (selected by #id or .class - class will use the first occurence)used as a black and white mask instead of adding the alpha to the video
 		  alphaMask: false, //defines if the used `mask` uses black and white or alpha information - defaults to false, i.e. black and white
 		  width: '', //lets you specify a pixel value used as width -- overrides all other calculations
 		  height: '', //lets you specify a pixel value used as height -- overrides all other calculations
-		  forceRendering: false //set to true forceRendering will force the rendering of canvas elements that are not visible in the viewport
 		}, options);
 
 		return this.each(function(){
@@ -154,7 +152,6 @@
 
 				/*hide video and append canvas elements - DOM manipulation done*/
 				var interval;
-				var refresh = 1 / settings.fps * 1000; //frame rate to ms-interval
 				
 				$this.hide().data('seeThru',{'staticMask':staticMask,'alphaMask':alphaMask,interval:interval}).after(bufferCanvas,displayCanvas);
 				
@@ -228,23 +225,17 @@
 				/*draw buffer info into display canvas*/
 				function drawFrame() {
 					
-					var visible = forceRendering ? true : inViewport(); //no need to check visibility if forceRendering is true
+					buffer.drawImage(video, 0, 0, dimensions.width, dimensions.height * divisor); //scales if <video>-dimensions are not matching
+					var image = buffer.getImageData(0, 0, dimensions.width, dimensions.height);
 					
-					if (visible){ //only calculate new frames if element is visible or flagged for forceRendering
-					
-						buffer.drawImage(video, 0, 0, dimensions.width, dimensions.height * divisor); //scales if <video>-dimensions are not matching
-						var image = buffer.getImageData(0, 0, dimensions.width, dimensions.height);
-						
-						var alphaData = buffer.getImageData(0, dimensions.height, dimensions.width, dimensions.height).data; //grab from video;
+					var alphaData = buffer.getImageData(0, dimensions.height, dimensions.width, dimensions.height).data; //grab from video;
 
-						for (var i = 3, len = image.data.length; i < len; i = i + 4) {
-							image.data[i] = Math.floor((alphaData[i - 1] + alphaData[i - 2] + alphaData[i - 3]) / 3); //calculate luminance from buffer part
-						}
-
-						display.putImageData(image, 0, 0, 0, 0, dimensions.width, dimensions.height);
-					
+					for (var i = 3, len = image.data.length; i < len; i = i + 4) {
+						image.data[i] = Math.floor((alphaData[i - 1] + alphaData[i - 2] + alphaData[i - 3]) / 3); //calculate luminance from buffer part
 					}
-					
+
+					display.putImageData(image, 0, 0, 0, 0, dimensions.width, dimensions.height);
+						
 					webkitRequestAnimationFrame(drawFrame);
 				}
 
