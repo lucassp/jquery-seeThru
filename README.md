@@ -129,7 +129,7 @@ $('#myRadVideoNeedsTransparencies').seeThru();
 Voila! Here's an [example][1].
 
 ##Changelog##
-   * v0.9.8: the plugin now uses the `requestAnimationFrame`-API for refreshing the canvas instead of using a JavaScript-interval (older browsers will be "poly-filled"), this should increase performance in critical situations and improve overall efficiency. Therefore the `fps` and `forceRendering` options are deprecated.
+   * v0.9.8: the plugin now uses the `requestAnimationFrame`-API for refreshing the canvas instead of using a JavaScript-interval (older browsers will be **["poly-filled"][17]**), this should increase performance in CPU-critical situations and improve overall efficiency. Therefore the `fps` and `forceRendering` options are deprecated.
    * v0.9.7: the original video will now echo mouse events triggered by the canvas represenation, so you can still "use" the hidden video element to bind events for user interaction, faster
    * v0.9.6: elements that are not visible in the viewport will stop rendering to lower CPU usage, added the `forceRendering` option
    * v0.9.5: added simple video playback control methods: `play` and `pause`
@@ -164,3 +164,4 @@ Thanks to **[Jake Archibald][7]**, who had the original idea for this approach, 
 [14]:http://www.diveintohtml5.info/video.html
 [15]:http://en.wikipedia.org/wiki/Alpha_compositing
 [16]:http://www.redgiantsoftware.com/products/all/knoll-unmult-free
+[17]:http://paulirish.com/2011/requestanimationframe-for-smart-animating/
