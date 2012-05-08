@@ -211,18 +211,6 @@
 						}
 					});
 				}
-				
-				function inViewport(){
-				
-					var viewTop = $window.scrollTop();
-					var viewBottom = viewTop + $window.height();
-
-					var elemTop = displayCanvas.offset().top;
-					var elemBottom = elemTop + displayCanvas.height();
-					
-					return (!((elemTop < viewTop && elemBottom < viewTop) || (elemTop > viewBottom && elemBottom > viewBottom)));
-					
-				}
 
 				/*draw buffer info into display canvas*/
 				function drawFrame(){
