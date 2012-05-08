@@ -10,7 +10,7 @@
 
 (function($) {
 
-	//from http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+	/* from http://paulirish.com/2011/requestanimationframe-for-smart-animating/ */
 	(function(){
 		var lastTime = 0;
 		var vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -28,13 +28,13 @@
 				return id;
 			};
 		}
-	})()
  
-	if (!window.cancelAnimationFrame){
-		window.cancelAnimationFrame = function(id) {
-			clearTimeout(id);
-		};
-	}
+		if (!window.cancelAnimationFrame){
+			window.cancelAnimationFrame = function(id) {
+				clearTimeout(id);
+			};
+		}
+	})()
 
 	function convertAlphaMask(dimensions, maskObj){
 		
@@ -224,7 +224,7 @@
 					}
 
 					display.putImageData(image, 0, 0, 0, 0, dimensions.width, dimensions.height);
-						
+					
 				}
 				
 				function animationLogic(){
