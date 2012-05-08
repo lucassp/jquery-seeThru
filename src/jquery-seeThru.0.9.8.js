@@ -97,7 +97,6 @@
 			
 				var $this = $(this);
 				var video = this;
-				var $window = $(window);
 				var divisor = staticMask ? 1 : 2; //static alpha data will not cut the image dimensions
 
 				/* calculate dimensions */
