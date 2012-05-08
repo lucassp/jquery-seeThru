@@ -10,6 +10,30 @@
 
 (function($) {
 
+	//from http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+	/*var lastTime = 0;
+	var vendors = ['ms', 'moz', 'webkit', 'o'];
+	for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+		window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+		window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+	}
+ 
+	if (!window.requestAnimationFrame){
+		window.requestAnimationFrame = function(callback, element) {
+			var currTime = new Date().getTime();
+			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+			var id = window.setTimeout(function(){callback(currTime+timeToCall);},timeToCall);
+			lastTime = currTime + timeToCall;
+			return id;
+		};
+	}
+ 
+    if (!window.cancelAnimationFrame){
+		window.cancelAnimationFrame = function(id) {
+			clearTimeout(id);
+		};
+	}*/
+
 	function convertAlphaMask(dimensions, maskObj){
 		
 		var convertCtx = $('<canvas/>').attr({'width':dimensions.width,'height':dimensions.height}).get(0).getContext('2d');
@@ -137,10 +161,11 @@
 				/*event handling - all events are .seeThru-namespaced*/
 				$this.bind('play.seeThru', function() { //refresh canvas elements
 					clearInterval(interval);
-					interval = setInterval(drawFrame, refresh);
+					//TODO: try using requestAnimationFrame
+					interval = webkitRequestAnimationFrame(drawFrame);
 					$this.data('seeThru').interval = interval;
 				}).bind('pause.seeThru', function(){ //stop interval on pause
-					clearInterval(interval);
+					webkitCancelAnimationFrame(interval);
 				});
 				
 				if (settings.start === 'autoplay'){
@@ -290,7 +315,7 @@
 			var $this = $(this);
 		
 			if ($this.data('seeThru')){
-				clearInterval($this.data('seeThru').interval);
+				webkitCancelAnimationFrame($this.data('seeThru').interval);
 				$this.show().unbind('.seeThru').removeData('seeThru').nextAll('.seeThru-buffer:first,.seeThru-display:first').remove();
 			}
 		});
