@@ -160,8 +160,9 @@
 
 				/*event handling - all events are .seeThru-namespaced*/
 				$this.bind('play.seeThru', function() { //refresh canvas elements
-					clearInterval(interval);
-					//TODO: try using requestAnimationFrame
+					if (interval){
+						webkitCancelAnimationFrame(interval);
+					}
 					interval = webkitRequestAnimationFrame(drawFrame);
 					$this.data('seeThru').interval = interval;
 				}).bind('pause.seeThru', function(){ //stop interval on pause
