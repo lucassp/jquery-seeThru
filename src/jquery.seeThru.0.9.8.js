@@ -211,7 +211,7 @@
 					});
 				}
 
-				/*draw buffer info into display canvas*/
+				/*draw video into buffer and converted data info into display canvas*/
 				function drawFrame(){
 					
 					buffer.drawImage(video, 0, 0, dimensions.width, dimensions.height * divisor); //scales if <video>-dimensions are not matching
@@ -304,6 +304,7 @@
 				window.cancelAnimationFrame($this.data('seeThru').interval);
 				$this.show().unbind('.seeThru').removeData('seeThru').nextAll('.seeThru-buffer:first,.seeThru-display:first').remove();
 			}
+			
 		});
 	}, // end revert
 	
